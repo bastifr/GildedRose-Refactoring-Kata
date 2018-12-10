@@ -140,6 +140,20 @@ describe('Gilded Rose', function () {
         checkQuality(items[0], expectetQuality);
     });
 
+    it('updateQuality when item name is "Aged Brie" and sellin is zero increments quality one', function() {
+        
+        //Arrange block  (SetUp)
+        const sellIn = 0;
+        const quality = 49;
+        const gildedRose = new GildedRose([ new Item('Aged Brie', sellIn, quality) ]);
+
+        //Acting block (execute)
+        const items = gildedRose.updateQuality();
+
+        //Assert block (verify)        
+        const expectetQuality = 50;
+        checkQuality(items[0], expectetQuality);
+    });
     
     it('updateQuality when item name is "Backstage passes to a TAFKAL80ETC concert" and sellIn is below first limit increments quality with two', function() {
         
@@ -176,6 +190,36 @@ describe('Gilded Rose', function () {
         //Arrange block  (SetUp)
         const sellIn = -1;
         const quality = 4;
+        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', sellIn, quality) ]);
+
+        //Acting block (execute)
+        const items = gildedRose.updateQuality();
+
+        //Assert block (verify)        
+        const expectetQuality = 0;
+        checkQuality(items[0], expectetQuality);
+    });
+
+    it('updateQuality when item name is "Backstage passes to a TAFKAL80ETC concert" and sellin is equal to first limit increse quality with one', function() {
+        
+        //Arrange block  (SetUp)
+        const sellIn = 11;
+        const quality = 47;
+        const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', sellIn, quality) ]);
+
+        //Acting block (execute)
+        const items = gildedRose.updateQuality();
+
+        //Assert block (verify)        
+        const expectetQuality = 48;
+        checkQuality(items[0], expectetQuality);
+    });
+
+    it('updateQuality when item name is "Backstage passes to a TAFKAL80ETC concert" and sellin is zero quality drops to zero', function() {
+        
+        //Arrange block  (SetUp)
+        const sellIn = 0;
+        const quality = 49;
         const gildedRose = new GildedRose([ new Item('Backstage passes to a TAFKAL80ETC concert', sellIn, quality) ]);
 
         //Acting block (execute)
