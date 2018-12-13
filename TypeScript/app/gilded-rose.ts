@@ -28,52 +28,66 @@ export class GildedRose {
     }
 
     updateQuality() {
-        for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].name != this.agedBrie && this.items[i].name != this.backstagePass) {
-                if (this.items[i].quality > 0) {
-                    if (this.items[i].name != this.sulfuras) {
-                        this.items[i].quality = this.items[i].quality - 1
-                    }
-                }
-            } else {
-                if (this.items[i].quality < this.qualityLimit) {
-                    this.items[i].quality = this.items[i].quality + 1
-                    if (this.items[i].name == this.backstagePass) {
-                        if (this.items[i].sellIn < this.firstLimitSellinBackstagePass) {
-                            if (this.items[i].quality < this.qualityLimit) {
-                                this.items[i].quality = this.items[i].quality + 1
-                            }
-                        }
-                        if (this.items[i].sellIn < this.secondLimitBackstagePass) {
-                            if (this.items[i].quality < this.qualityLimit) {
-                                this.items[i].quality = this.items[i].quality + 1
-                            }
-                        }
-                    }
-                }
-            }
-            if (this.items[i].name != this.sulfuras) {
-                this.items[i].sellIn = this.items[i].sellIn - 1;
-            }
-            if (this.items[i].sellIn < 0) {
-                if (this.items[i].name != this.agedBrie) {
-                    if (this.items[i].name != this.backstagePass) {
-                        if (this.items[i].quality > 0) {
-                            if (this.items[i].name != this.sulfuras) {
-                                this.items[i].quality = this.items[i].quality - 1
-                            }
-                        }
-                    } else {
-                        this.items[i].quality = this.items[i].quality - this.items[i].quality
-                    }
-                } else {
-                    if (this.items[i].quality < this.qualityLimit) {
-                        this.items[i].quality = this.items[i].quality + 1
-                    }
+        this.items.forEach(item => {
+            this.updateItem(item);
+        });
+        return this.items;
+    }
+
+    private updateItem(item: Item) {
+        if (item.name != this.agedBrie && item.name != this.backstagePass) {
+            if (item.quality > 0) {
+                if (item.name != this.sulfuras) {
+                    item.quality = item.quality - 1;
                 }
             }
         }
+        else {
+            if (item.quality < this.qualityLimit) {
+                item.quality = item.quality + 1;
+                if (item.name == this.backstagePass) {
+                    this.updateQualityBasedOnSellInForBackstagePass(item);
+                }
+            }
+        }
+        if (item.name != this.sulfuras) {
+            item.sellIn = item.sellIn - 1;
+        }
+        if (item.sellIn < 0) {
+            if (item.name != this.agedBrie) {                
+                if (item.name == this.backstagePass) {
+                    this.resetQualityForBackstagePass(item);
+                }
+                else {
+                    if (item.quality > 0) {
+                        if (item.name != this.sulfuras) {
+                            item.quality = item.quality - 1;
+                        }
+                    }
+                }
+            }
+            else {
+                if (item.quality < this.qualityLimit) {
+                    item.quality = item.quality + 1;
+                }
+            }
+        }
+    }
 
-        return this.items;
+    private resetQualityForBackstagePass(item: Item) {
+        item.quality = item.quality - item.quality;
+    }
+
+    private updateQualityBasedOnSellInForBackstagePass(item: Item) {
+        if (item.sellIn < this.firstLimitSellinBackstagePass) {
+            if (item.quality < this.qualityLimit) {
+                item.quality = item.quality + 1;
+            }
+        }
+        if (item.sellIn < this.secondLimitBackstagePass) {
+            if (item.quality < this.qualityLimit) {
+                item.quality = item.quality + 1;
+            }
+        }
     }
 }
