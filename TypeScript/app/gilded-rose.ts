@@ -53,8 +53,11 @@ export class GildedRose {
         if (item.name != this.sulfuras) {
             item.sellIn = item.sellIn - 1;
         }
-        if (item.sellIn < 0) {
-            if (item.name != this.agedBrie) {                
+        if (item.sellIn < 0) {           
+            if (item.name == this.agedBrie) {
+                this.updateQualityBasedOnQualityLimitForAgedBrie(item);
+            }
+            else {
                 if (item.name == this.backstagePass) {
                     this.resetQualityForBackstagePass(item);
                 }
@@ -66,11 +69,12 @@ export class GildedRose {
                     }
                 }
             }
-            else {
-                if (item.quality < this.qualityLimit) {
-                    item.quality = item.quality + 1;
-                }
-            }
+        }
+    }
+
+    private updateQualityBasedOnQualityLimitForAgedBrie(item: Item) {
+        if (item.quality < this.qualityLimit) {
+            item.quality = item.quality + 1;
         }
     }
 
